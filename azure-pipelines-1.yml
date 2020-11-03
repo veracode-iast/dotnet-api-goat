@@ -16,13 +16,11 @@ variables:
 
 resources:
   containers:
-  - container: 'Agent_Server'
+  - container: 'iast_agent_server'
     image: 'veracode/iast-agent-server:latest'
     ports:
-    - 10010:tcp
-    env:
-      VERACODE_API_KEY_ID: '$(veracode_api_key_id)'
-      VERACODE_API_KEY_SECRET: '$(veracode_api_key_secret)'
+    - 10010:10010
+    options: -e 'VERACODE_API_KEY_ID=$(veracode_api_key_id)' -e 'VERACODE_API_KEY_SECRET=$(veracode_api_key_secret)'
 
 steps:
 - task: NuGetToolInstaller@1
