@@ -35,13 +35,7 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: InvokeRESTAPI@1
-  inputs:
-    connectionType: 'connectedServiceName'
-    serviceConnection: 'https://iast_agent_server:10010'
-    method: 'GET'
-    urlSuffix: '/iast/as/v1'
-    waitForCompletion: 'true'
+
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
