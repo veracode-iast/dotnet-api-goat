@@ -22,7 +22,8 @@ jobs:
 
   steps:
   - script: |
-      sleep 10
+      echo Waiting for Agent Server to start
+      sleep 20
       curl --insecure https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
 
