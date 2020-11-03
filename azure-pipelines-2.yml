@@ -1,0 +1,31 @@
+# azure-pipelines.yml
+trigger:
+- master
+
+resources:
+  containers:
+  - container: 'iast_agent_server'
+    image: 'veracode/iast-agent-server:latest'
+    ports:
+    - 10010:10010
+    options: -e 'VERACODE_API_KEY_ID=$(veracode_api_key_id)' -e 'VERACODE_API_KEY_SECRET=$(veracode_api_key_secret)'
+
+jobs:
+- job: run_iast_agent_server
+  displayName: Run the IAST Agent Server
+
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  services:
+    iast_agent_server: iast_agent_server
+
+  steps:
+  - script: status_code=$(curl --write-out %{http_code} --silent --output /dev/null --insecure https://iast_agent_server:10010/iast/as/v1
+    displayName: Ping Agent Server to make sure it's alive
+
+  - script: echo Sending session_start event
+    displayName: Send session_start event
+
+  - script: echo Sending session_stop event
+    displayName: Send session_stop event
