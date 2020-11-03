@@ -22,6 +22,9 @@ resources:
     - 10010:10010
     options: -e 'VERACODE_API_KEY_ID=$(veracode_api_key_id)' -e 'VERACODE_API_KEY_SECRET=$(veracode_api_key_secret)'
 
+services:
+  iast_agent_server: iast_agent_server
+  
 steps:
 - task: NuGetToolInstaller@1
 
