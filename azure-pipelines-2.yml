@@ -21,11 +21,20 @@ jobs:
     iast_agent_server: iast_agent_server
 
   steps:
-  - script: status_code=$(curl --write-out %{http_code} --silent --output /dev/null --insecure https://iast_agent_server:10010/iast/as/v1)
-    displayName: Ping Agent Server to make sure it's alive
+  - script: curl --insecure https://iast_agent_server:10010/iast/as/v1
+    displayName: Ping Agent Server
 
   - script: echo Sending session_start event
     displayName: Send session_start event
 
-  - script: echo Sending session_stop event
+  - script: echo Building solution...
+    displayName: Build
+
+  - script: echo Testing with IAST...
+    displayName: Test
+
+  - script: echo Sending session_stop event...
     displayName: Send session_stop event
+
+  - script: echo Getting results...
+    displayName: Get results
