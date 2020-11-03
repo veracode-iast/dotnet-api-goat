@@ -21,7 +21,9 @@ jobs:
     iast_agent_server: iast_agent_server
 
   steps:
-  - script: curl --insecure https://iast_agent_server:10010/iast/as/v1
+  - script: |
+      sleep 10
+      curl --insecure https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
 
   - script: echo Sending session_start event
