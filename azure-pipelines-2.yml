@@ -2,18 +2,13 @@
 trigger:
 - master
 
-variables:
-- name: VERACODE_API_KEY_ID
-  value: $(veracode_api_key_id)
-- name: VERACODE_API_KEY_SECRET
-  value: $(veracode_api_key_secret)
-- name: NA
-  value: testing
-
 resources:
   containers:
   - container: 'iast_agent_server'
     image: 'veracode/iast-agent-server:latest'
+    env:
+      VERACODE_API_KEY_ID: $(veracode_api_key_id)
+      VERACODE_API_KEY_SECRET: $(veracode_api_key_secret)
     ports:
     - 10010:10010
 
@@ -29,9 +24,7 @@ jobs:
   steps:
   - script: |
       echo 'Waiting for Agent Server to start'
-      echo 'my pipeline variable is $(veracode_api_key_id)'
-      echo 'my pipeline variable is $(VERACODE_API_KEY_ID)'
-      echo 'my pipeline variable is $(NA)'
+      echo my pipeline variable is $VERACODE_API_KEY_ID
       sleep 30
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
