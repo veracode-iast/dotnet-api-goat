@@ -24,8 +24,7 @@ jobs:
   steps:
   - script: |
       echo 'Waiting for Agent Server to start'
-      echo 'VERACODE_API_KEY_ID'
-      echo $(veracode_api_key_id)
+      if [ -z ${VERACODE_API_KEY_ID+x} ]; then echo "VERACODE_API_KEY_ID is unset"; else echo "VERACODE_API_KEY_ID is set"; fi
       sleep 60
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
