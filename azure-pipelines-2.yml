@@ -6,9 +6,6 @@ resources:
   containers:
   - container: 'iast_agent_server'
     image: 'veracode/iast-agent-server:latest'
-    env:
-      VERACODE_API_KEY_ID: $(api_key_id)
-      VERACODE_API_KEY_SECRET: $(api_key_secret)
     ports:
     - 10010:10010
 
@@ -24,9 +21,12 @@ jobs:
   steps:
   - script: |
       echo 'Waiting for Agent Server to start'
-      echo my pipeline variable is $VERACODE_API_KEY_ID
+      echo "my pipeline variable is: $VERACODE_API_KEY_ID"
       sleep 30
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
+    env:
+      VERACODE_API_KEY_ID: $(api_key_id)
+      VERACODE_API_KEY_SECRET: $(api_key_secret)
     displayName: Ping Agent Server
 
   - script: echo Sending session_start event
