@@ -2,6 +2,12 @@
 trigger:
 - master
 
+variables:
+- name: VERACODE_API_KEY_ID
+  value: $(veracode_api_key_id)
+- name: VERACODE_API_KEY_SECRET
+  value: $(veracode_api_key_secret)
+
 resources:
   containers:
   - container: 'iast_agent_server'
@@ -25,8 +31,8 @@ jobs:
   - script: |
       echo 'Waiting for Agent Server to start'
       if [ -z ${VERACODE_API_KEY_ID+x} ]; then echo "VERACODE_API_KEY_ID is not set"; else echo "VERACODE_API_KEY_ID is set"; fi
-      if [ -z ${VERACODE_API_KEY_ID+x} ]; then echo "veracode_api_key_id is not set"; else echo "veracode_api_key_id is set"; fi
-      sleep 60
+      if [ -z ${veracode_api_key_id+x} ]; then echo "veracode_api_key_id is not set"; else echo "veracode_api_key_id is set"; fi
+      sleep 30
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
 
