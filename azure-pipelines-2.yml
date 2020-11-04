@@ -7,8 +7,8 @@ resources:
   - container: 'iast_agent_server'
     image: 'veracode/iast-agent-server:latest'
     env:
-      VERACODE_API_KEY_ID: $(veracode_api_key_id)
-      VERACODE_API_KEY_SECRET: $(veracode_api_key_secret)
+      VERACODE_API_KEY_ID: $(api_key_id)
+      VERACODE_API_KEY_SECRET: $(api_key_secret)
     ports:
     - 10010:10010
 
