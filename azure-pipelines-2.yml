@@ -30,8 +30,8 @@ jobs:
   steps:
   - script: |
       echo 'Waiting for Agent Server to start'
-      if [ -z ${VERACODE_API_KEY_ID+x} ]; then echo "VERACODE_API_KEY_ID is not set"; else echo "VERACODE_API_KEY_ID is set"; fi
-      if [ -z ${veracode_api_key_id+x} ]; then echo "veracode_api_key_id is not set"; else echo "veracode_api_key_id is set"; fi
+      echo 'my pipeline variable is $(veracode_api_key_id)'
+      echo 'my pipeline variable is $(VERACODE_API_KEY_ID)'
       sleep 30
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
