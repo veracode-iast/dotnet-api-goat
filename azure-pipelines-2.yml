@@ -25,7 +25,7 @@ jobs:
 
   steps:
   - script: |
-      echo Waiting for Agent Server to start
+      echo 'Waiting for Agent Server to start'
       sleep 60
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
