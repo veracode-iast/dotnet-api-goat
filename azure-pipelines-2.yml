@@ -9,6 +9,7 @@ resources:
     env:
       VERACODE_API_KEY_ID: $(veracode_api_key_id)
       VERACODE_API_KEY_SECRET: $(veracode_api_key_secret)
+      NA: testing
     ports:
     - 10010:10010
 
