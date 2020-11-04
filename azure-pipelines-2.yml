@@ -8,9 +8,9 @@ resources:
     properties:
       environmentVariables:
         - name: 'VERACODE_API_KEY_ID'
-          value: $(api_key_id)
+          value: '$(api_key_id)'
         - name: 'VERACODE_API_KEY_SECRET'
-          secureValue: $(api_key_secret)
+          secureValue: '$(api_key_secret)'
     image: 'veracode/iast-agent-server:latest'
     ports:
     - 10010:10010
