@@ -11,6 +11,7 @@ resources:
       VERACODE_API_KEY_SECRET: $veracode_api_key_secret
     ports:
     - 10010:10010
+    options: -e 'VERACODE_API_KEY_ID=$(veracode_api_key_id)' -e 'VERACODE_API_KEY_SECRET=$(veracode_api_key_secret)'
 
 jobs:
 - job: run_iast_agent_server
@@ -26,7 +27,7 @@ jobs:
   - script: |
       echo Waiting for Agent Server to start
       sleep 60
-      curl --insecure https://iast_agent_server:10010/iast/as/v1
+      DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
 
   - script: echo Sending session_start event
