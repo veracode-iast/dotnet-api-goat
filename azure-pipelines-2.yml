@@ -7,11 +7,10 @@ resources:
   - container: 'iast_agent_server'
     image: 'veracode/iast-agent-server:latest'
     env:
-      VERACODE_API_KEY_ID: $veracode_api_key_id
-      VERACODE_API_KEY_SECRET: $veracode_api_key_secret
+      VERACODE_API_KEY_ID: $(veracode_api_key_id)
+      VERACODE_API_KEY_SECRET: $(veracode_api_key_secret)
     ports:
     - 10010:10010
-    options: -e 'VERACODE_API_KEY_ID=$(veracode_api_key_id)' -e 'VERACODE_API_KEY_SECRET=$(veracode_api_key_secret)'
 
 jobs:
 - job: run_iast_agent_server
@@ -22,10 +21,11 @@ jobs:
 
   services:
     iast_agent_server: iast_agent_server
-
   steps:
   - script: |
       echo 'Waiting for Agent Server to start'
+      echo 'VERACODE_API_KEY_ID'
+      echo $(veracode_api_key_id)
       sleep 60
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
