@@ -32,6 +32,7 @@ jobs:
       echo 'Waiting for Agent Server to start'
       echo 'my pipeline variable is $(veracode_api_key_id)'
       echo 'my pipeline variable is $(VERACODE_API_KEY_ID)'
+      echo 'my pipeline variable is $(NA)'
       sleep 30
       DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
