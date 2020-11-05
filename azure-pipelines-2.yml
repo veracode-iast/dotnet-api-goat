@@ -29,22 +29,10 @@ stages:
     steps: 
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
-        Add-Type @"
-        using System.Net;
-        using System.Security.Cryptography.X509Certificates;
-        public class TrustAllCertsPolicy : ICertificatePolicy {
-            public bool CheckValidationResult(
-            ServicePoint srvPoint, X509Certificate certificate,
-            WebRequest request, int certificateProblem) {
-                return true;
-            }
+        Function ReturnTrue()
+        {
+          return $true
         }
-        "@
-
-        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-
-        # Set Tls versions
-        $allProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
-        [System.Net.ServicePointManager]::SecurityProtocol = $allProtocols
+        [System.Net.ServicePointManager]::ServerCertificateValidationCallback =  ReturnTrue
         Invoke-WebRequest -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
