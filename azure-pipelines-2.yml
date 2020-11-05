@@ -30,22 +30,37 @@ stages:
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
         sleep 30
-        add-type @"
+        if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
+        {
+        $certCallback = @"
+            using System;
             using System.Net;
+            using System.Net.Security;
             using System.Security.Cryptography.X509Certificates;
-            public class TrustAllCertsPolicy : ICertificatePolicy {
-                public bool CheckValidationResult(
-                    ServicePoint srvPoint, X509Certificate certificate,
-                    WebRequest request, int certificateProblem) {
-                    return true;
+            public class ServerCertificateValidationCallback
+            {
+                public static void Ignore()
+                {
+                    if(ServicePointManager.ServerCertificateValidationCallback ==null)
+                    {
+                        ServicePointManager.ServerCertificateValidationCallback += 
+                            delegate
+                            (
+                                Object obj, 
+                                X509Certificate certificate, 
+                                X509Chain chain, 
+                                SslPolicyErrors errors
+                            )
+                            {
+                                return true;
+                            };
+                    }
                 }
             }
         "@
-        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-        $param = @{
-          Uri         = "https://localhost:10010/iast/as/v1"
-          Method      = "Get"
+            Add-Type $certCallback
         }
-        $response = Invoke-RestMethod @param 
-        Write-Host $response
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
+        [ServerCertificateValidationCallback]::Ignore()
+        Invoke-WebRequest -Uri https://localhost:10010/iast/as/v1
       displayName: Ping Agent Server
