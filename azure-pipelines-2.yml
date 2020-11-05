@@ -27,15 +27,12 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@6
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
         sleep 30
         $param = @{
           Uri         = "https://0.0.0.0:10010/iast/as/v1"
           Method      = "Get"
-          AllowUnencryptedAuthentication = True
-          SkipCertificateCheck = True
         }
         $response = Invoke-RestMethod @param 
         Write-Host $response
