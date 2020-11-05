@@ -30,7 +30,7 @@ jobs:
       - job: Run_Agent_Server
         pool:
           vmImage: 'windows-latest'
-          steps: 
-          - powershell: |
-            Write-Host "Waiting for Agent Server to start"
+        steps: 
+        - powershell: |
+          Write-Host "Waiting for Agent Server to start"
 
