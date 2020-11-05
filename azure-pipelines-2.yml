@@ -29,4 +29,3 @@ resources:
         steps: 
         - powershell: |
           Write-Host "Waiting for Agent Server to start"
-
