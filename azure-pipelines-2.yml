@@ -28,9 +28,15 @@ jobs:
   steps:
   - script: |
       docker container list
+      echo $(resources.container.iast_agent_server.type)
+      echo $(resources.container.iast_agent_server.registry)
+      echo $(resources.container.iast_agent_server.repository)
+      echo $(resources.container.iast_agent_server.tag)
+      echo $(resources.container.iast_agent_server.digest)
+      echo $(resources.container.iast_agent_server.URI)
+      echo $(resources.container.iast_agent_server.location)
       echo 'Waiting for Agent Server to start'
-      echo "my pipeline variable is: $VERACODE_API_KEY_ID"
-      sleep 30
+      sleep 60
       DEBUG=1 curl -k -L https://0.0.0.0:10010/iast/as/v1
     displayName: Ping Agent Server
 
