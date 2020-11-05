@@ -29,5 +29,5 @@ stages:
     steps: 
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
-        Invoke-RestMethod -Uri https://localhost:10010/iast/as/v1
+        Invoke-RestMethod -Uri "https://0.0.0.0:10010/iast/as/v1"
       displayName: Ping Agent Server
