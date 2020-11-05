@@ -8,7 +8,7 @@ variables:
 - name: VERACODE_API_KEY_SECRET
   value: $(api_key_secret)
 - name: AGENT_SERVER_URL
-  value: "$https://localhost:10010/iast/as/v1"
+  value: "https://localhost:10010/iast/as/v1"
 
 resources:
   containers:
