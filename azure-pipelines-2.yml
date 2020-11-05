@@ -7,6 +7,8 @@ variables:
   value: $(api_key_id)
 - name: VERACODE_API_KEY_SECRET
   value: $(api_key_secret)
+- name: AGENT_SERVER_URL
+  value: "$https://localhost:10010/iast/as/v1"
 
 resources:
   containers:
@@ -28,7 +30,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps: 
     - powershell: |
-        $webRequest = [Net.WebRequest]::Create("$https://localhost:10010/iast/as/v1")
+        $webRequest = [Net.WebRequest]::Create($AGENT_SERVER_URL)
         try { $webRequest.GetResponse() } catch {}
         $cert = $webRequest.ServicePoint.Certificate
         $bytes = $cert.Export("Cert")
