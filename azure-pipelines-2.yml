@@ -20,31 +20,17 @@ jobs:
 - job: run_iast_agent_server
   displayName: Run the IAST Agent Server
 
-  pool:
-    vmImage: 'ubuntu-latest'
+  stages:
+  - stage: main
+    services:
+      iast_agent_server: iast_agent_server
+    pool: 
+      vmImage: 'ubuntu-latest'
+      jobs:
+      - job: Run_Agent_Server
+        pool:
+          vmImage: 'windows-latest'
+          steps: 
+          - powershell: |
+            Write-Host "Waiting for Agent Server to start"
 
-  services:
-    iast_agent_server: iast_agent_server
-  steps:
-  - script: |
-      echo 'Waiting for Agent Server to start'
-      sleep 30
-      DEBUG=1 curl -k -L https://0.0.0.0:10010/iast/as/v1
-    displayName: Ping Agent Server
-
-  - script: |
-      echo 'Downloading Agent via /downloads endpoint'
-      DEBUG=1 curl -k -L https://0.0.0.0:10010/iast/as/v1/downloads | sh
-    displayName: Download Agent
-
-  - script: echo Building solution...
-    displayName: Build
-
-  - script: echo Testing with IAST...
-    displayName: Test
-
-  - script: echo Sending session_stop event...
-    displayName: Send session_stop event
-
-  - script: echo Getting results...
-    displayName: Get results
