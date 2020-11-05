@@ -27,7 +27,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@7
+    - task: AzurePowerShell@4
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
         sleep 30
