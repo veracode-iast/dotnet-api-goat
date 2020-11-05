@@ -27,11 +27,11 @@ jobs:
     iast_agent_server: iast_agent_server
   steps:
   - script: |
+      docker cotainer list
       echo 'Waiting for Agent Server to start'
       echo "my pipeline variable is: $VERACODE_API_KEY_ID"
       sleep 30
-      echo Trying pipeline resource variable $(resources.container.iast_agent_server.URI) ...
-      DEBUG=1 curl -k -L https://$(resources.container.iast_agent_server.URI):10010/iast/as/v1
+      DEBUG=1 curl -k -L https://iast_agent_server:10010/iast/as/v1
     displayName: Ping Agent Server
 
   - script: echo Sending session_start event
