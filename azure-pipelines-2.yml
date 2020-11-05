@@ -29,37 +29,22 @@ stages:
     steps: 
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
-        if (-not ([System.Management.Automation.PSTypeName]'ServerCertificateValidationCallback').Type)
-        {
-        $certCallback = @"
-            using System;
-            using System.Net;
-            using System.Net.Security;
-            using System.Security.Cryptography.X509Certificates;
-            public class ServerCertificateValidationCallback
-            {
-                public static void Ignore()
-                {
-                    if(ServicePointManager.ServerCertificateValidationCallback ==null)
-                    {
-                        ServicePointManager.ServerCertificateValidationCallback += 
-                            delegate
-                            (
-                                Object obj, 
-                                X509Certificate certificate, 
-                                X509Chain chain, 
-                                SslPolicyErrors errors
-                            )
-                            {
-                                return true;
-                            };
-                    }
-                }
+        Add-Type @"
+        using System.Net;
+        using System.Security.Cryptography.X509Certificates;
+        public class TrustAllCertsPolicy : ICertificatePolicy {
+            public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+                return true;
             }
-        "@
-            Add-Type $certCallback
         }
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12;
-        [ServerCertificateValidationCallback]::Ignore()
+        "@
+
+        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+
+        # Set Tls versions
+        $allProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+        [System.Net.ServicePointManager]::SecurityProtocol = $allProtocols
         Invoke-WebRequest -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
