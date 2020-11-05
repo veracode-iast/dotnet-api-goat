@@ -28,22 +28,10 @@ stages:
       vmImage: 'ubuntu-latest'
     steps: 
     - powershell: |
-        Write-Host "Waiting for Agent Server to start"
-        sleep 30
-        Add-Type @"
-        using System.Net;
-        using System.Security.Cryptography.X509Certificates;
-        public class TrustAllCertsPolicy : ICertificatePolicy {
-            public bool CheckValidationResult(
-            ServicePoint srvPoint, X509Certificate certificate,
-            WebRequest request, int certificateProblem) {
-                return true;
-            }
-        }
-        "@
-        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-        # Set Tls versions
-        $allProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
-        [System.Net.ServicePointManager]::SecurityProtocol = $allProtocols
-        Invoke-WebRequest -Uri https://localhost:10010/iast/as/v1
+        $webRequest = [Net.WebRequest]::Create("$https://localhost:10010/iast/as/v1")
+        try { $webRequest.GetResponse() } catch {}
+        $cert = $webRequest.ServicePoint.Certificate
+        $bytes = $cert.Export("Cert")
+        set-content -value $bytes -encoding byte -path "$pwd\Agent-Server.cert"
+        Import-Certificate -FilePath $pwd\Agent-Server.cert -CertStoreLocation Cert:\LocalMachine\Root\
       displayName: Ping Agent Server
