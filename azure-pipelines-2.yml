@@ -29,7 +29,7 @@ stages:
     steps: 
     - task: AzurePowerShell@5
       inputs:
-        azureSubscription: my-arm-service-connection
+        azureSubscription: iast_agent_server
         azurePowerShellVersion: latestVersion
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
