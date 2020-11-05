@@ -16,16 +16,16 @@ resources:
     ports:
     - 10010:10010
 
-  stages:
-  - stage: main
-    pool: 
-      vmImage: 'ubuntu-latest'
-      jobs:
-      - job: Run_Agent_Server
-        services:
-          iast_agent_server: iast_agent_server
-        pool:
-          vmImage: 'windows-latest'
-        steps: 
-        - powershell: |
-            Write-Host "Waiting for Agent Server to start"
+stages:
+- stage: main
+  pool: 
+    vmImage: 'ubuntu-latest'
+    jobs:
+    - job: Run_Agent_Server
+      services:
+        iast_agent_server: iast_agent_server
+      pool:
+        vmImage: 'windows-latest'
+      steps: 
+      - powershell: |
+          Write-Host "Waiting for Agent Server to start"
