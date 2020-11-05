@@ -27,6 +27,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
+    - task: AzurePowerShell@7
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
         sleep 30
@@ -38,3 +39,4 @@ stages:
         }
         $response = Invoke-RestMethod @param 
         Write-Host $response
+      displayName: Ping Agent Server
