@@ -28,4 +28,4 @@ resources:
           vmImage: 'windows-latest'
         steps: 
         - powershell: |
-          Write-Host "Waiting for Agent Server to start"
+            Write-Host "Waiting for Agent Server to start"
