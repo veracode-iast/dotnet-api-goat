@@ -31,7 +31,7 @@ stages:
         Write-Host "Waiting for Agent Server to start"
         Function ReturnTrue()
         {
-          return $true
+          return $True
         }
         [System.Net.ServicePointManager]::ServerCertificateValidationCallback =  ReturnTrue
         Invoke-WebRequest -Uri "https://localhost:10010/iast/as/v1"
