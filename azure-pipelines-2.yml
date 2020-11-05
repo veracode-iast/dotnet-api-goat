@@ -19,7 +19,7 @@ resources:
 stages:
 - stage: main
   pool: 
-    vmImage: 'ubuntu-latest'
+    vmImage: 'windows-latest'
   jobs:
   - job: Run_Agent_Server
     services:
