@@ -34,7 +34,7 @@ jobs:
 
   - script: |
       echo 'Downloading Agent via /downloads endpoint'
-      DEBUG=1 curl -k -L https://agent-server:10010/iast/as/v1/downloads | sh
+      DEBUG=1 curl -k -L https://0.0.0.0:10010/iast/as/v1/downloads | sh
     displayName: Download Agent
 
   - script: echo Building solution...
