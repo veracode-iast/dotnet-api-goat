@@ -27,7 +27,7 @@ jobs:
     iast_agent_server: iast_agent_server
   steps:
   - script: |
-      docker cotainer list
+      docker container list
       echo 'Waiting for Agent Server to start'
       echo "my pipeline variable is: $VERACODE_API_KEY_ID"
       sleep 30
