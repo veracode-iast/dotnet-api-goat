@@ -36,6 +36,8 @@ stages:
     steps: 
     - powershell: |
         Write-Host "nuget"
+        $kernel = uname -s
+        Write-Host $kernel
       displayName: Nuget
   - job: build
     pool:
