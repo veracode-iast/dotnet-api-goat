@@ -28,7 +28,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@5
+    - task: PowerShell@5
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
         $webRequest = [Net.WebRequest]::Create('$(AGENT_SERVER_URL)')
