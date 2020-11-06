@@ -6,6 +6,8 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  AGENT_SERVER_URL: 'https://localhost:10010/iast/as/v1'
+
 
 resources:
   containers:
@@ -28,7 +30,13 @@ stages:
     steps: 
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
-        Invoke-RestMethod -Uri "https://localhost:10010/iast/as/v1"
+        Write-Host "Waiting for Agent Server to start"
+        $webRequest = [Net.WebRequest]::Create('$(AGENT_SERVER_URL)')
+        $webRequest.GetResponse()
+        $cert = $webRequest.ServicePoint.Certificate
+        $bytes = $cert.Export("Cert")
+        set-content -value $bytes -encoding byte -path "$pwd\Agent-Server.cert"
+        Import-Certificate -FilePath $pwd\Agent-Server.cert -CertStoreLocation Cert:\LocalMachine\Root\
       displayName: Ping Agent Server
   - job: Nuget
     pool:
