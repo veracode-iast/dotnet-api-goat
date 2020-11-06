@@ -28,7 +28,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: PowerShell@4
+    - task: AzurePowerShell@4
       inputs:
         targetType: 'inline'
     - powershell: |
