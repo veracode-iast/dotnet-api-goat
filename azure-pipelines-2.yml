@@ -46,12 +46,12 @@ stages:
     - powershell: |
         Write-Host "build"
       displayName: Build
-  - job: Test with IAST
+  - job: test_iast
     pool:
       vmImage: 'windows-2019'
     steps: 
     - powershell: |
         Write-Host "test"
       displayName: Test
-  - job: Send session_stop
-  - job: Get Results
+  - job: session_stop
+  - job: get_results
