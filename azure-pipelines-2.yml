@@ -29,5 +29,7 @@ stages:
     steps: 
     - powershell: |
         Write-Host "Waiting for Agent Server to start"
+        $kernel=uname -s
+        Write-Host "check_and_set_OS: kernel: $kernel"
         Invoke-WebRequest -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
