@@ -30,7 +30,7 @@ stages:
         Write-Host "Waiting for Agent Server to start"
         Invoke-RestMethod -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
-  - job: nuget
+  - job: Nuget
     pool:
       vmImage: 'windows-2019'
     steps: 
@@ -39,17 +39,19 @@ stages:
         $kernel = uname -s
         Write-Host $kernel
       displayName: Nuget
-  - job: build
+  - job: Build
     pool:
       vmImage: 'windows-2019'
     steps: 
     - powershell: |
         Write-Host "build"
       displayName: Build
-  - job: test
+  - job: Test with IAST
     pool:
       vmImage: 'windows-2019'
     steps: 
     - powershell: |
         Write-Host "test"
       displayName: Test
+  - job: Send session_stop
+  - job: Get Results
