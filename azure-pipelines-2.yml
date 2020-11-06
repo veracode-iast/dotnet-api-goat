@@ -30,26 +30,33 @@ stages:
         Write-Host "Waiting for Agent Server to start"
         Invoke-RestMethod -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
+  - job: Nuget_Install
+    pool:
+      vmImage: 'windows-2019'
+    steps: 
+    - task: NuGetToolInstaller@1
   - job: nuget
     pool:
       vmImage: 'windows-2019'
     steps: 
-    - powershell: |
-        Write-Host "nuget"
-        $kernel = uname -s
-        Write-Host $kernel
-      displayName: Nuget
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
   - job: build
     pool:
       vmImage: 'windows-2019'
-    steps: 
-    - powershell: |
-        Write-Host "build"
-      displayName: Build
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
   - job: test
     pool:
       vmImage: 'windows-2019'
     steps: 
-    - powershell: |
-        Write-Host "test"
-      displayName: Test
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+        otherConsoleOptions: '/Framework:.NETFramework,Version=v4.7.2'
