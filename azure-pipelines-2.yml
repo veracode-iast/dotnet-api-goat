@@ -2,6 +2,11 @@
 trigger:
 - master
 
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
 resources:
   containers:
   - container: 'iast_agent_server'
@@ -25,3 +30,24 @@ stages:
         Write-Host "Waiting for Agent Server to start"
         Invoke-RestMethod -Uri "https://localhost:10010/iast/as/v1"
       displayName: Ping Agent Server
+  - job: nuget
+    pool:
+      vmImage: 'windows-2019'
+    steps: 
+    - powershell: |
+        Write-Host "nuget"
+      displayName: Nuget
+  - job: build
+    pool:
+      vmImage: 'windows-2019'
+    steps: 
+    - powershell: |
+        Write-Host "build"
+      displayName: Build
+  - job: test
+    pool:
+      vmImage: 'windows-2019'
+    steps: 
+    - powershell: |
+        Write-Host "test"
+      displayName: Test
