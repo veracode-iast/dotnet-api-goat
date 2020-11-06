@@ -28,7 +28,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@4
+    - task: AzurePowerShell@5
       inputs:
         connectedServiceNameARM: $(AzureSubscriptionEndpointId)
     - powershell: |
