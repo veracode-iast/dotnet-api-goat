@@ -6,8 +6,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  AGENT_SERVER_URL: 'https://localhost:10010/iast/as/v1'
-
 
 resources:
   containers:
@@ -28,15 +26,9 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@5
-    - powershell: |
-        Write-Host "Waiting for Agent Server to start"
-        $webRequest = [Net.WebRequest]::Create('$(AGENT_SERVER_URL)')
-        $webRequest.GetResponse()
-        $cert = $webRequest.ServicePoint.Certificate
-        $bytes = $cert.Export("Cert")
-        set-content -value $bytes -encoding byte -path "$pwd\Agent-Server.cert"
-        Import-Certificate -FilePath $pwd\Agent-Server.cert -CertStoreLocation Cert:\LocalMachine\Root\
+    - bash: |
+        echo "Waiting for Agent Server to start"
+        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1
       displayName: Ping Agent Server
   - job: Nuget
     pool:
@@ -44,22 +36,20 @@ stages:
     steps: 
     - bash: |
         echo "nuget"
-        $kernel = uname -s
-        echo $kernel
       displayName: Nuget
   - job: Build
     pool:
       vmImage: 'windows-2019'
     steps: 
-    - powershell: |
-        Write-Host "build"
+    - bash: |
+        echo "build"
       displayName: Build
   - job: test_iast
     pool:
       vmImage: 'windows-2019'
     steps: 
-    - powershell: |
-        Write-Host "test"
+    - bash: |
+        echo "test"
       displayName: Test
   - job: session_stop
   - job: get_results
