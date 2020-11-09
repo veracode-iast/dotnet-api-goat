@@ -19,13 +19,13 @@ resources:
 stages:
 - stage: main
   pool: 
-    vmImage: 'windows-2019'
+    vmImage: 'ubuntu-latest'
   jobs:
   - job: Run_Agent_Server
     services:
       iast_agent_server: iast_agent_server
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-2019'
     steps: 
     - task: AzurePowerShell@5
     - powershell: |
