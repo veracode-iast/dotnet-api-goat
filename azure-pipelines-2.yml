@@ -28,7 +28,7 @@ stages:
     steps: 
     - bash: |
         echo "Waiting for Agent Server to start"
-        DEBUG=1 curl -k -L https://0.0.0.0:10010/iast/as/v1
+        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1
       displayName: Ping Agent Server
   - job: Nuget
     pool:
