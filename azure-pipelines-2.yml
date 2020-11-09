@@ -54,6 +54,9 @@ stages:
       inputs:
         restoreSolution: '$(solution)'
   - job: Test_With_IAST
+    dependsOn:
+      - Nuget_And_Build
+      - Run_Agent_Server
     pool:
       vmImage: 'windows-2019'
     steps: 
@@ -67,4 +70,6 @@ stages:
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-  - job: get_results
+  - job: Get_Results
+    dependsOn:
+    - Test_With_IAST
