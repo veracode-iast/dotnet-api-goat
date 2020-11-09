@@ -6,6 +6,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  AGENT_SERVER_URL: 'https://localhost:10010/iast/as/v1'
 
 resources:
   containers:
@@ -29,13 +30,13 @@ stages:
     - bash: |
         echo "Waiting for Agent Server to start"
         sleep 30
-        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1
+        DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
         sleep 5
         echo "Downloading agents..."
-        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1/downloads | sh
+        DEBUG=1 curl -k -L $(AGENT_SERVER_URL)/downloads | sh
         ls -la
       displayName: Run Agent Server
-  - job: Nuget_Build
+  - job: Nuget_And_Build
     pool:
       vmImage: 'windows-2019'
     steps: 
@@ -52,7 +53,7 @@ stages:
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
-  - job: test_iast
+  - job: Test_With_IAST
     pool:
       vmImage: 'windows-2019'
     steps: 
