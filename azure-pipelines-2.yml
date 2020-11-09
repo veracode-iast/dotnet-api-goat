@@ -6,7 +6,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  AGENT_SERVER_URL:'https://localhost:10010/iast/as/v1'
 
 resources:
   containers:
@@ -19,9 +18,9 @@ resources:
 stages:
 - stage: main
   pool: 
-    vmImage: 'ubuntu-latest'
+    vmImage: 'windows-2019'
   jobs:
-    - job: Run_Agent_Server
+  - job: Run_Agent_Server
     services:
       iast_agent_server: iast_agent_server
     pool:
