@@ -48,6 +48,8 @@ stages:
       vmImage: 'windows-2019'
     steps: 
     - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
     - bash: |
         echo "Running nuget"
       displayName: Nuget Run
