@@ -38,8 +38,8 @@ stages:
   - job: Nuget
     pool:
       vmImage: 'windows-2019'
-    - task: NuGetToolInstaller@1
     steps: 
+    - task: NuGetToolInstaller@1
     - bash: |
         echo "nuget"
       displayName: Nuget
