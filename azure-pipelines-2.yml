@@ -57,10 +57,13 @@ stages:
       vmImage: 'windows-2019'
     steps: 
     - bash: |
-        echo "setting COR profiler"
+        echo "setting COR profiler and running tests"
         SET COR_ENABLE_PROFILING=1
         SET COR_PROFILER={90747D54-A553-4353-8E39-CA9ADE930151}
         SET COR_PROFILER_PATH=agent_dotnet_win32.dll
       displayName: Test
-  - job: session_stop
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
   - job: get_results
