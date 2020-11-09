@@ -35,7 +35,7 @@ stages:
         DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1/downloads | sh
         ls -la
       displayName: Run Agent Server
-  - job: Nuget_Install
+  - job: Nuget_Build
     pool:
       vmImage: 'windows-2019'
     steps: 
@@ -49,12 +49,18 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
   - job: test_iast
     pool:
       vmImage: 'windows-2019'
     steps: 
     - bash: |
-        echo "test"
+        echo "setting COR profiler"
+        SET COR_ENABLE_PROFILING=1
+        SET COR_PROFILER={90747D54-A553-4353-8E39-CA9ADE930151}
+        SET COR_PROFILER_PATH=agent_dotnet_win32.dll
       displayName: Test
   - job: session_stop
   - job: get_results
