@@ -68,9 +68,10 @@ stages:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
   - job: Get_Results
+    pool:
+      vmImage: 'windows-2019'
     dependsOn:
-    - Test_With_IASTpool:
-      vmImage: 'ubuntu-latest'
+    - Test_With_IAST
     steps: 
     - bash: |
         echo "Waiting for Agent Server to start"
