@@ -35,14 +35,22 @@ stages:
         DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1/downloads | sh
         ls -la
       displayName: Ping Agent Server
-  - job: Nuget
+  - job: Nuget_Install
     pool:
       vmImage: 'windows-2019'
     steps: 
     - task: NuGetToolInstaller@1
     - bash: |
-        echo "nuget"
-      displayName: Nuget
+        echo "Installing nuget..."
+      displayName: Nuget Install
+  - job: Run_Nuget
+    pool:
+      vmImage: 'windows-2019'
+    steps: 
+    - task: NuGetCommand@2
+    - bash: |
+        echo "Running nuget"
+      displayName: Nuget Run
   - job: Build
     pool:
       vmImage: 'windows-2019'
