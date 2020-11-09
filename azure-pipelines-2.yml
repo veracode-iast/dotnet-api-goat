@@ -21,21 +21,15 @@ stages:
   pool: 
     vmImage: 'ubuntu-latest'
   jobs:
-  - job: Run_Agent_Server
+    - job: Run_Agent_Server
     services:
       iast_agent_server: iast_agent_server
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'ubuntu-latest'
     steps: 
-    - task: AzurePowerShell@5
-    - powershell: |
-        Write-Host "Waiting for Agent Server to start"
-        $webRequest = [Net.WebRequest]::Create('$(AGENT_SERVER_URL)')
-        try { $webRequest.GetResponse() } catch {}
-        $cert = $webRequest.ServicePoint.Certificate
-        $bytes = $cert.Export("Cert")
-        set-content -value $bytes -encoding byte -path "$pwd\Agent-Server.cert"
-        Import-Certificate -FilePath $pwd\Agent-Server.cert -CertStoreLocation Cert:\LocalMachine\Root\
+    - bash: |
+        echo "Waiting for Agent Server to start"
+        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1
       displayName: Ping Agent Server
   - job: Nuget
     pool:
