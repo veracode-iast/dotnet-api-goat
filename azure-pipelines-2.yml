@@ -50,9 +50,6 @@ stages:
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-    - task: NuGetCommand@2
-      inputs:
-        restoreSolution: '$(solution)'
   - job: Test_With_IAST
     dependsOn:
       - Nuget_And_Build
@@ -72,4 +69,10 @@ stages:
         configuration: '$(buildConfiguration)'
   - job: Get_Results
     dependsOn:
-    - Test_With_IAST
+    - Test_With_IASTpool:
+      vmImage: 'ubuntu-latest'
+    steps: 
+    - bash: |
+        echo "Waiting for Agent Server to start"
+        DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
+      displayName: Get Test Results
