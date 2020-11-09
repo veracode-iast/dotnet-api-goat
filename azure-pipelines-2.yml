@@ -34,7 +34,7 @@ stages:
         echo "Downloading agents..."
         DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1/downloads | sh
         ls -la
-      displayName: Ping Agent Server
+      displayName: Run Agent Server
   - job: Nuget_Install
     pool:
       vmImage: 'windows-2019'
@@ -54,7 +54,13 @@ stages:
   - job: Build
     pool:
       vmImage: 'windows-2019'
-    steps: 
+    steps:
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
     - bash: |
         echo "build"
       displayName: Build
