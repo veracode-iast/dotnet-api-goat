@@ -40,32 +40,15 @@ stages:
       vmImage: 'windows-2019'
     steps: 
     - task: NuGetToolInstaller@1
-    - bash: |
-        echo "Installing nuget..."
-      displayName: Nuget Install
-  - job: Run_Nuget
-    pool:
-      vmImage: 'windows-2019'
-    steps: 
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
-    - bash: |
-        echo "Running nuget"
-      displayName: Nuget Run
-  - job: Build
-    pool:
-      vmImage: 'windows-2019'
-    steps:
     - task: VSBuild@1
       inputs:
         solution: '$(solution)'
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-    - bash: |
-        echo "build"
-      displayName: Build
   - job: test_iast
     pool:
       vmImage: 'windows-2019'
