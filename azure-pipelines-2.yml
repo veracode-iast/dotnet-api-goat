@@ -6,6 +6,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  AGENT_SERVER_URL:'https://localhost:10010/iast/as/v1'
 
 resources:
   containers:
@@ -20,11 +21,11 @@ stages:
   pool: 
     vmImage: 'windows-2019'
   jobs:
-  - job: Run_Agent_Server_1
+  - job: Run_Agent_Server
     services:
       iast_agent_server: iast_agent_server
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-2019'
     steps: 
     - task: AzurePowerShell@5
     - powershell: |
@@ -35,16 +36,6 @@ stages:
         $bytes = $cert.Export("Cert")
         set-content -value $bytes -encoding byte -path "$pwd\Agent-Server.cert"
         Import-Certificate -FilePath $pwd\Agent-Server.cert -CertStoreLocation Cert:\LocalMachine\Root\
-      displayName: Ping Agent Server 1
-  - job: Run_Agent_Server
-    services:
-      iast_agent_server: iast_agent_server
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps: 
-    - bash: |
-        echo "Waiting for Agent Server to start"
-        DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1
       displayName: Ping Agent Server
   - job: Nuget
     pool:
