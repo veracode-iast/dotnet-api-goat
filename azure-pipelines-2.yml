@@ -33,6 +33,7 @@ stages:
         echo "Downloading agents..."
         sleep 30
         DEBUG=1 curl -k -L https://localhost:10010/iast/as/v1/downloads | sh
+        ls -la
       displayName: Ping Agent Server
   - job: Nuget
     pool:
