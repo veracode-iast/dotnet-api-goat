@@ -27,6 +27,8 @@ resources:
 steps: 
 - bash: |
     echo "Waiting for Agent Server to start"
+    echo "VERACODE_API_KEY_ID"
+    echo $(VERACODE_API_KEY_ID)
     sleep 30
     DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
     sleep 5
