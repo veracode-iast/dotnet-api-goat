@@ -11,7 +11,7 @@ variables:
 resources:
   containers:
   - container: 'iast_agent_server'
-    image: 'veracode/iast-agent-server:windows-latest'
+    image: 'veracode/iast-agent-server:latest'
     options: -e VERACODE_API_KEY_ID=$(api_key_id) -e VERACODE_API_KEY_SECRET=$(api_key_secret)
     ports:
     - 10010:10010
@@ -33,8 +33,7 @@ stages:
         DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
         sleep 5
         echo "Downloading agents..."
-        curl -u Powershell -k $(AGENT_SERVER_URL)/downloads -o .\iast-ci.ps1
-        powershell .\iast-ci.ps1
+        DEBUG=1 curl -k -L $(AGENT_SERVER_URL)/downloads | sh
         ls -la
       displayName: Run Agent Server
   - job: Nuget_And_Build
