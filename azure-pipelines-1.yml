@@ -27,13 +27,11 @@ resources:
 steps: 
 - bash: |
     echo "Waiting for Agent Server to start"
-    echo "VERACODE_API_KEY_ID"
-    echo $(VERACODE_API_KEY_ID)
     sleep 30
     DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
     sleep 5
     echo "Downloading agents..."
-    curl -u Powershell -k $(AGENT_SERVER_URL)/downloads -o ./iast-ci.ps1 
+    curl -A Powershell -k $(AGENT_SERVER_URL)/downloads -o ./iast-ci.ps1  
     powershell ./iast-ci.ps1
     ls -la
   displayName: Run Agent Server
