@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  AGENT_SERVER_URL: 'https://iast_agent_server:10010/iast/as/v1'
+  AGENT_SERVER_URL: 'https://localhost:10010/iast/as/v1'
 
 resources:
   containers:
@@ -22,8 +22,6 @@ resources:
     ports:
     - 10010:10010
     options: -e VERACODE_API_KEY_ID=$(api_key_id) -e VERACODE_API_KEY_SECRET=$(api_key_secret)
-services:
-  iast_agent_server: iast_agent_server
   
 
 steps: 
@@ -33,8 +31,8 @@ steps:
     DEBUG=1 curl -k -L $(AGENT_SERVER_URL)
     sleep 5
     echo "Downloading agents..."
-    curl -u Powershell -k $(AGENT_SERVER_URL)/downloads -o .\iast-ci.ps1 
-    powershell .\iast-ci.ps1
+    curl -u Powershell -k $(AGENT_SERVER_URL)/downloads -o ./iast-ci.ps1 
+    powershell ./iast-ci.ps1
     ls -la
   displayName: Run Agent Server
 - task: NuGetToolInstaller@1
