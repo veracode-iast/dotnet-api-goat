@@ -13,7 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  AGENT_SERVER_URL: 'https://localhost:10010/iast/as/v1'
+  AGENT_SERVER_URL: 'https://iast_agent_server:10010/iast/as/v1'
 
 resources:
   containers:
