@@ -60,3 +60,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- bash: |
+    echo "Checking Results"
+    curl -k $(AGENT_SERVER_URL)/events?session_id=last > flaws.txt
+    cat flaws.txt
+  displayName: Display Flaws
