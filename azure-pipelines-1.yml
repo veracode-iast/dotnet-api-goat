@@ -50,11 +50,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- bash: |
-  echo "setting COR profiler and running tests"
-  export COR_ENABLE_PROFILING=1
-  export COR_PROFILER={90747D54-A553-4353-8E39-CA9ADE930151}
-  export COR_PROFILER_PATH=agent_dotnet_win32.dll
+- task: Bash@3
+    echo "setting COR profiler and running tests"
+    export COR_ENABLE_PROFILING=1
+    export COR_PROFILER={90747D54-A553-4353-8E39-CA9ADE930151}
+    export COR_PROFILER_PATH=agent_dotnet_win32.dll
 
 - task: VSTest@2
   inputs:
