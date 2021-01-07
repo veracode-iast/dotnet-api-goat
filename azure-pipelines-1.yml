@@ -36,6 +36,12 @@ steps:
     curl -A PowerShell -k $(AGENT_SERVER_URL)/downloads -o ./iast-ci.ps1 
     powershell ./iast-ci.ps1
     ls -la
+    # Set the BUILD_TAG.
+    export BUILD_TAG='$(Build.BuildNumber)'
+    echo Using BUILD_TAG: $BUILD_TAG
+    # Allocate a session_id
+    SESSION_ID=`curl -H "Content-Type:application/json" -H "x-iast-event:session_start" --silent --insecure -X POST -d "{\"BUILD_TAG\":\"${BUILD_TAG}\"}" ${AGENT_SERVER_URL}/events | jq -r '.session_id'`
+    echo Using session_id: $SESSION_ID
   displayName: Run Agent Server
 - task: NuGetToolInstaller@1
 
@@ -65,7 +71,9 @@ steps:
 
 - bash: |
     echo "Checking Results"
-    curl -k $(AGENT_SERVER_URL)/events?session_id=last > flaws.txt
-    cat flaws.txt
+    curl -H "Accept:text/plain" --silent --insecure -X GET $(AGENT_SERVER_URL)/events?session_id=${SESSION_ID} > events.txt
+    curl -H "Accept:text/plain" --silent --insecure -X GET $(AGENT_SERVER_URL)/results?session_id=${SESSION_ID} > results.txt
+    cat events.txt
+    cat results.txt
     ls -la
   displayName: Display Flaws
