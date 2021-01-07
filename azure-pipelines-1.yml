@@ -54,16 +54,18 @@ steps:
     echo "setting COR profiler and running tests"
     export COR_ENABLE_PROFILING=1
     export COR_PROFILER={90747D54-A553-4353-8E39-CA9ADE930151}
-    export COR_PROFILER_PATH=agent_dotnet_win32.dll
+    export COR_PROFILER_PATH=agent_win32.dll
   displayName: Agent Setup for DotNet
 
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.7.2'
 
 - bash: |
     echo "Checking Results"
     curl -k $(AGENT_SERVER_URL)/events?session_id=last > flaws.txt
     cat flaws.txt
+    ls -la
   displayName: Display Flaws
