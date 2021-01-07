@@ -71,9 +71,6 @@ steps:
 
 - bash: |
     echo "Checking Results"
-    curl -H "Accept:text/plain" --silent --insecure -X GET $(AGENT_SERVER_URL)/events?session_id=${SESSION_ID} > events.txt
     curl -H "Accept:text/plain" --silent --insecure -X GET $(AGENT_SERVER_URL)/results?session_id=${SESSION_ID} > results.txt
-    cat events.txt
     cat results.txt
-    ls -la
   displayName: Display Flaws
